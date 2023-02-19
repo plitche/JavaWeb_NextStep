@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 // import org.junit.Test; 사용시 public으로 하지 않으면 run이 안됨. 왜?
-@SpringBootTest
 public class StringCalc1_2Test3 {
 
     /*
