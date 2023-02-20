@@ -1,4 +1,4 @@
-package com.nextStep.javaWeb;
+package com.nextStep.javaWeb.day_0219;
 
 
 import com.nextStep.javaWeb.day_0219.StringCalc1_2;
