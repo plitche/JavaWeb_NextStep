@@ -11,7 +11,7 @@ public class StringCalcAnswer {
      */
 
     int add(String text) {
-        if (text == null || text.isEmpty()) return 0;
+        if (isBlank(text)) return 0;
 
 //        (1)
 //        if (text.contains(",")) {
@@ -20,31 +20,43 @@ public class StringCalcAnswer {
 //            for (String value : values) {
 //                sum += Integer.parseInt(value);
 //            }
-//
 //            return sum;
 //        }
 
-        String[] values = text.split(",");
-        int sum = 0;
-        for (String value : values) {
-            sum += Integer.parseInt(value);
-        }
+//        (2)
+//        String[] values = text.split(",");
+//        int sum = 0;
+//        for (String value : values) {
+//            sum += Integer.parseInt(value);
+//        }
+//
+//        return sum;
 
-        return sum;
+        return sum(toInts(split(text)));
     }
 
-    public static void main(String[] args) {
-        Matcher m = Pattern.compile("//(.)\n(.*)").matcher("1,2:3");
-        if (m.find()) {
-            String custome = m.group(1);
+    private boolean isBlank(String text) {
+        return text == null || text.isEmpty();
+    }
 
-            System.out.println("custome = " + custome);
-            String[] tokens = m.group(2).split(custome);
+    private String[] split(String text) {
+        return text.split(",");
+    }
 
-            System.out.println("tokens = " + tokens);
-
+    private int[] toInts(String[] values) {
+        int[] numbers = new int[values.length];
+        for (int i=0; i<values.length; i++) {
+            numbers[i] = Integer.parseInt(values[i]);
         }
+        return numbers;
+    }
 
+    private int sum(int[] numbers) {
+        int sum = 0;
+        for (int number : numbers) {
+            sum += number;
+        }
+        return sum;
     }
 
 }
