@@ -1,0 +1,42 @@
+	3장 개발 환경 구축 및 웹 서버 실습 요구사항
+		* AWS 구축하기(https://opentutorials.org/module/328/3002)
+		* 클라우드와 아마존 웹 서비스
+			- 서버의 구매, 구축, 운영을 대행해주는 서비스
+			- 웹호스팅과 유사
+			- 가상화 기술
+			- 탄력적인 인프라 운영
+			
+		* EC2
+			- Elastic Compute Cloud
+			- 독립적인 컴퓨터
+			- Linux, Window 운영체제 제공
+			- 웹서버, 에플리케이션 서버로 사용
+		
+		* S3
+			- Simple Storage Service : 파일 서버
+			- 무제한 저장
+			- 스케일은 아마존 인프라가 담당
+			- 1바이트~5테라 바이트의 단일 파일을 저장 가능
+			
+		* RDS
+			- Relational Database Service
+			- Mysql, Oracle, SQL Server 지원
+			- 백업, 리플리케이션을 아마존 인프라가 자동으로 제공
+			
+		* ELB
+			- Elastic Load Balancing 
+				Load : 시스템에 가해지는 부하
+				Balancing : 분산
+			- EC2로 유입되는 트래픽을 여러대의 EC2로 분산
+			- 장애가 발생한 EC2를 감지해서 자동으로 배제
+			- AUTO Scaling 기능을 이용해서 EC2를 자동으로 생성, 삭제
+			
+			
+			
+			
+			
+			
+			
+			
+		
+		
