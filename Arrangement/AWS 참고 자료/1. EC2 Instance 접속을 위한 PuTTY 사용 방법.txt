@@ -1,0 +1,6 @@
+	1. EC2 Instance 접속을 위한 PuTTY 사용 방법.txt
+		- https://us-east-1.console.aws.amazon.com/console
+			> EC2 -> 인스턴스 -> 인스턴스 시작
+			
+		- PuTTY: 퍼블릭 IPv4 주소
+		- ping google.com
