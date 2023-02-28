@@ -61,5 +61,7 @@
   2. @Before, @After 애노테이션은 @Test 애노테이션의 메소드가 실행 전, 후에 반복해서 실행된다.  
   3. No tests found for given includes 에러 발생  
     - Settings > Build,Execution,Deployment > Build Tools > Gradle > "Run tests using:  IntelliJ IDEA" 로 변경  
-
+  
+### 명령어
+  - env
 
