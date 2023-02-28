@@ -64,4 +64,12 @@
   
 ### 명령어
   - env
-
+  - wget
+  - gunzip
+  - tar
+  - cd
+  - mv
+  - rm
+  - ln -s
+  - source
+  - vi
