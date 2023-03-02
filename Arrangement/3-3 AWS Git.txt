@@ -1,0 +1,27 @@
+	3-3 AWS Git
+		* ubuntu git install
+		* Home 디렉토리에 배포할 HTTP 웹 서버의 GitHub 저장소 cline
+		* git cline 명령어 활용
+		
+		* colen한 디렉토리 이동 후 mvn clean package 명령 : 프로젝트 빌드
+		* 빌드 후 java -cp target/classes:target/dependency/* webserver .WebServer $PORT $ 실행
+			- $PORT는 1024보다 큰 숫자
+		* $PORT를 7070으로 실행했다면 curl http://localhost:7070을 실행해 콘솔에 Hello World가 찍히는지 확인
+		
+			- curl(client url) 명령어는 프로토콜들을 이용해 URL 로 데이터를 전송하여 서버에 데이터를 보내거나 가져올때 사용하기 위한 명령줄 도구 및 라이브러리이다.
+			- 쉽게말해 예를들어 자바스크립트 환경에서 REST API(http)를 테스트하고싶다면 보통 ajax, fetch 를 이용해 요청을 보내는 것과 같이, 
+			  SHELL(커맨드라인 환경)에서 REST API(http) 테스트 하고 싶으면 curl 명령어를 이용하면 된다 라고 이해하면 된다.
+				
+				
+		* Git
+			- 정보 확인
+				git config list
+			- 세팅
+				git config --global user.name "홍길동"
+				git config --global user.email "~~~@~~~.~"
+			- git config 삭제
+				git config --unset user.name
+				git config --unset user.email
+				
+
+	

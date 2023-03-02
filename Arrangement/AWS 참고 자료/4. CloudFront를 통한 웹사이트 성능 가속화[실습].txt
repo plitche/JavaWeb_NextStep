@@ -1,0 +1,5 @@
+	4. CloudFront를 통한 웹사이트 성능 가속화[실습]
+		* Viewer protocol policy
+			> 컨텐츠 전송에 있어서 암호화나 보안등을 위해 설정
+
+
