@@ -52,7 +52,19 @@
     - 아마존 웹 서비스(AWS)를 활용(EC2 인스턴스)(https://opentutorials.org/module/1946)
       
   
+---
+### JUnit
+  - 프로그래밍에서 모든 함수와 메서드에 대한 테스트 케이스(Test case)를 작성하여 의도된 대로 잘 동작하는지 검증하는 절차  
+  - 프로그램을 작은 단위로 쪼개어 각 단위가 정확하게 동작하는지 검사함으로써 프로그램의 안정성을 높임  
+  - System.out.println()으로 하는 번거로운 디버깅이 필요없으며, 개발기간 중 대부분을 차지하는 디버깅 시간을 단축  
   
+  - 단정 메서드
+    1. assertArrayEquals(a, b): 배열 A와 B가 일치함을 확인
+    2. assertEquals(a, b): 객체 A와 B가 같은 값을 가지는지 확인
+    3. assertEquals(a, b, c): 객체 A와 B가 값이 일치함을 확인( a: 예상값, b:결과값, c: 오차범위)
+    4. assertSame(a, b): 객체 A와 B가 같은 객체임을 확인
+    5. assertTrue(a): 조건 A가 참인지 확인
+    6. assertNotNull(a): 객체 A가 null이 아님을 확인
   
   
 ---
