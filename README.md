@@ -66,15 +66,14 @@
     5. assertTrue(a): 조건 A가 참인지 확인
     6. assertNotNull(a): 객체 A가 null이 아님을 확인
   
-  
 ---
-### Etc
+### Etc  
   1. import org.junit.Test; 사용시 public으로 하지 않으면 run이 안됨. 왜?  
   2. @Before, @After 애노테이션은 @Test 애노테이션의 메소드가 실행 전, 후에 반복해서 실행된다.  
   3. No tests found for given includes 에러 발생  
     - Settings > Build,Execution,Deployment > Build Tools > Gradle > "Run tests using:  IntelliJ IDEA" 로 변경  
   
-### 명령어
+### 명령어  
   - env
   - wget
   - gunzip
