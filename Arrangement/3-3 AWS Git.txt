@@ -35,7 +35,9 @@
 			  SHELL(커맨드라인 환경)에서 REST API(http) 테스트 하고 싶으면 curl 명령어를 이용하면 된다 라고 이해하면 된다.
 				
 				
-		* Git
+		===================================================================================================================
+				
+		* Git 관련 명령어 정리
 			- 정보 확인
 				git config --list
 			- 세팅
@@ -44,6 +46,10 @@
 			- git config 삭제
 				git config --unset user.name
 				git config --unset user.email
+			- 원격 저장소로 부터 프로젝트 내려받기
+				git clone [repository url]
+			- 깃 버전 확인
+				git --version
 				
 
 		
