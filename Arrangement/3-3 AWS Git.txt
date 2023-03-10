@@ -1,11 +1,33 @@
 	3-3 AWS Git
-		* ubuntu git install
-		* Home 디렉토리에 배포할 HTTP 웹 서버의 GitHub 저장소 cline
-		* git cline 명령어 활용
+		* https://youtu.be/N8iLAuAo-Qw
 		
-		* colen한 디렉토리 이동 후 mvn clean package 명령 : 프로젝트 빌드
-		* 빌드 후 java -cp target/classes:target/dependency/* webserver .WebServer $PORT $ 실행
+		
+		* ubuntu git install
+			(1) sudo apt-get install git : 패키지 리스트 업데이트
+			(2) sudo apt install git : 깃 설치
+			(3) git --version : git 버전 확인
+			(4) git config --global user.name [이름]
+				git config --global user.mail [메일 주소]
+			
+		* Home 디렉토리에 배포할 HTTP 웹 서버의 GitHub 저장소 clone
+			(1) git clone [url 주소] : 원하는 repository로부터 내려받음
+				- git clone https://github.com/plitche/web-application-server.git
+				- git clone https://github.com/plitche/jwp-basic.git
+				
+		* clone한 디렉토리 이동 후 mvn clean package 명령 : 프로젝트 빌드
+			- mvc clean package 
+				: 빌드한 결과물을 target이라는 directory에 컴파일 된다.
+				
+		* 빌드 후 java -cp target/classes:target/dependency/* webserver .WebServer $PORT & 실행
 			- $PORT는 1024보다 큰 숫자
+				: -cp(class path)
+			- 마지막에 &를 사용하면 백그라운드에서 실행되어 Ctrl+z로 터미널에서 다른 작업도 수행 가능하다.
+			
+			- ps -ef | grep "webserver"
+			: 현재 운영체제에서 실행되고 있는 모든 프로세스를 다 확인 할 수 있다.
+			
+			- kill -9 [processID]
+						
 		* $PORT를 7070으로 실행했다면 curl http://localhost:7070을 실행해 콘솔에 Hello World가 찍히는지 확인
 		
 			- curl(client url) 명령어는 프로토콜들을 이용해 URL 로 데이터를 전송하여 서버에 데이터를 보내거나 가져올때 사용하기 위한 명령줄 도구 및 라이브러리이다.
@@ -15,7 +37,7 @@
 				
 		* Git
 			- 정보 확인
-				git config list
+				git config --list
 			- 세팅
 				git config --global user.name "홍길동"
 				git config --global user.email "~~~@~~~.~"
@@ -24,4 +46,4 @@
 				git config --unset user.email
 				
 
-	
+		
