@@ -15,7 +15,7 @@
 				- git clone https://github.com/plitche/jwp-basic.git
 				
 		* clone한 디렉토리 이동 후 mvn clean package 명령 : 프로젝트 빌드
-			- mvc clean package 
+			- mvn clean package 
 				: 빌드한 결과물을 target이라는 directory에 컴파일 된다.
 				
 		* 빌드 후 java -cp target/classes:target/dependency/* webserver .WebServer $PORT & 실행

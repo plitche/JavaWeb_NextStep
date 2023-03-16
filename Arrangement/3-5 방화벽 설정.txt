@@ -1,0 +1,12 @@
+	3-4 방화벽 설정
+		* https://www.youtube.com/watch?v=N8iLAuAo-Qw
+		* https://taptorestart.tistory.com/entry/Q-AWS-EC2%EC%97%90-%EC%99%B8%EB%B6%80-%EC%A0%91%EC%86%8D-%EA%B0%80%EB%8A%A5%ED%95%98%EA%B2%8C-%ED%95%98%EB%A0%A4%EB%A9%B4
+		* https://webdir.tistory.com/206
+		
+		
+		* ufw 활성화하기
+			- sudo ufw enable : 방화벽 활성화
+			- sudo ufw allow ssh : 허용
+			- sudo ufw status : 현재 열려있는 포트 정보 확인
+			
+			- putty로 ppk를 통해 접속함.
