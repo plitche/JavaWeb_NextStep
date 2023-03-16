@@ -1,0 +1,9 @@
+	3-6 재배포
+		* Github 저장소의 "Hello World"를 다른 tesxt로 바꾼후 push
+		* git pull 명령어를 통해 원격저장소의 내용 가져오기
+		* ps -ef | grep ~~ 로 프로세스 아이디 찾기(PID)
+		* kill -9 $PID로 웹서버 종료
+		
+		* mvn clean pakage
+		* java -cp ~~로 서버 실행
+		* curl http://localhost:/7070 명령어를 통해 수정된 내용 확인
