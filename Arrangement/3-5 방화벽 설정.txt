@@ -10,3 +10,8 @@
 			- sudo ufw status : 현재 열려있는 포트 정보 확인
 			
 			- putty로 ppk를 통해 접속함.
+			
+			
+		* RDP TCP 3389 MY IP
+		* SSH TCP 22 0.0.0.0/0 ??
+		* HTTP TCP 80 0.0.0.0/0
