@@ -12,8 +12,13 @@
 				> :$TOMCAT_HOME/bin
 			- source .bash_profile
 			- ./startup.sh : 톰켓 실행
+			- cd ../logs/
+			- ls -al
+			- tail -500f catalina.out
+			- cd ../webapps/
 			
 		* bat: window, sh: linux
 		
 		
-			
+		* sudo apt install net-tools
+		* netstat -tuple : port가 열려있는지 상태 확인
