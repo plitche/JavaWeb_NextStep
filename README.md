@@ -78,6 +78,15 @@
 
 서블릿
 ---  
+### Ubuntu Apache 설치
+ 1. $ sudo apt-get update
+ 2. $ sudo apt-get install apache2
+ 3. $ sudo service apache2 start : 아파치 실행
+ 4. $ ps aux | grep apache2 : 아파치 실행 확인
+ 5. ip 접속 후 Apache2 화면 확인
+ 6. $ sudo service apache2 stop : 아파치 종료
+  
+---  
   
 ### Etc  
   1. import org.junit.Test; 사용시 public으로 하지 않으면 run이 안됨. 왜?  
