@@ -22,3 +22,14 @@
 		
 		* sudo apt install net-tools
 		* netstat -tuple : port가 열려있는지 상태 확인
+		
+		* netstat -ano | grep ~~
+		* tcp6는 ipv6
+			- 사용하지 않도록 disable 하는 설정
+			
+			- /etc/default/grub
+			- GRUB_CMDLINE_LINUX_DEFAULT="ipv6.disable=1"
+			  GRUB_CMDLINE_LINUX="ipv6.disable=1"
+			- update-grub
+			- 서버 재부팅
+			- ip a
