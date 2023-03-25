@@ -1,0 +1,6 @@
+	10. LAMP 웹 서버 및 Application Load Balancer 구성 - public EC2 인스턴스 생성 및 LAMP 웹서버 구성[실습]
+		* EC2
+			- instances
+				> Launch instances
+					!Amazon Machine Image: 서버를 시작하는데 필요한 운영체제놔 관련 어플리케이션 등 일종의 템플릿
+					

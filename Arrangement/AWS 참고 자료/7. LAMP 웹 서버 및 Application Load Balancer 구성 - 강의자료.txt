@@ -1,0 +1,1 @@
+	7. LAMP 웹 서버 및 Application Load Balancer 구성 - 강의자료

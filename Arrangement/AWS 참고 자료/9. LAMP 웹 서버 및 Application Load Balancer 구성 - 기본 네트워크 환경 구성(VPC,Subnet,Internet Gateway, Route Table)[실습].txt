@@ -1,0 +1,1 @@
+	9. LAMP 웹 서버 및 Application Load Balancer 구성 - 기본 네트워크 환경 구성(VPC,Subnet,Internet Gateway, Route Table)[실습]
