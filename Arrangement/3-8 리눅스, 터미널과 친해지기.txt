@@ -1,0 +1,8 @@
+	3-8 리눅스, 터미널과 친해지기
+		- 클라우드 서비스의 경우 다른 사용자에게 영향을 미치지 않기 때문에 마음껏 시도하라.
+		- 리눅스에서 가장 많이 사용하는 에디터는 Vim 에디터이다.
+		
+		- 리눅스 커맨드라인 완벽 입문서
+			: http://linuxcommand.org/tlcl.php
+		- https://youtu.be/JbH-xzD7IkE
+		- http://goo.gl/Mq6hRd
