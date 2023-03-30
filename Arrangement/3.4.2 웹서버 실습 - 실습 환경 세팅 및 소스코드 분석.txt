@@ -1,0 +1,8 @@
+	3.4.2 웹서버 실습 - 실습 환경 세팅 및 소스코드 분석
+		(https://github.com/slipp/web-application-server의 master 브랜치 사용)
+		
+		- fork를 통한 repositories는 commit push가 일어나더라도 contribute가 되지 않고
+		  pull request를 통한 실제 repository에 반영이 되어야만 기여한 것으로 인정해보인다.
+		  
+		
+		
