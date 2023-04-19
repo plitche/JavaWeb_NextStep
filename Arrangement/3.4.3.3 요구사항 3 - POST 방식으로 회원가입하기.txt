@@ -1,0 +1,8 @@
+	3.4.3.3 요구사항 3 - POST 방식으로 회원가입하기
+		* http://localhost:8080/user/form.html 파일의 form 태그 method를 get에서 post로 수정
+		
+		
+		* POST로 데이터를 전달할 경우 전달하는 데이터는 HTTP 본문에 담긴다
+		* HTTP 본문에 전달되는 데이터는 GET 방식으로 전달할 때의 이름=값 과 같다.
+		* BufferedReader에서 본문 데이터는 util.IOUtiles 클래스의 readData() 메소드를 활용
+		* 회원가입시 입력한 모든 데이터를 추출해 User 객체를 생성한다.
