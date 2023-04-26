@@ -1,0 +1,33 @@
+	4.2.1.4 요구사항 4 - 302 status code 적용
+		* 회원가입을 완료 후 index.html 페이지로 이동한다. 브라우저의 URL도 /user/create가 아니라 /index.html로 변경
+		
+		* 사실 index.html로 변경하는 방법은 간단하다.
+			String url = tokens[1];
+			if ("/user/create".equals(url)) {
+				[...]
+				log.debug("User : {}", user);
+				url = "/index.html";
+			}
+			
+			하지만 문제점이 브라우저에서 새로고침 버튼을 클릭하고 IDE 콘솔을 확인해보면 앞에서 요청했던
+			회원가입 요청이 재 전송된다.
+			
+			- 이 현상은 브라우저가 이전 요청 정보를 유지하고 있기 때문이다.
+		      때문에 302 status code를 활용하여 응답을 보낼 때 클라이언트에게 /index.html로 이동하게 해야한다.
+			- 이 때 응답 헤더는 Location으로
+			  HTTP/1.1 302 Found
+			  Location: /index.html
+			  
+			- 위 같이 응답을 보내면 클라이언트는 첫 라인의 상태 코드를 확인 한 후 302라면 Location의 값을 읽어 서버에 재 용청을 보낸다.
+			
+		* 302 Status Code
+			1. /user/create 요청
+			2. 회원가입 처리 후 index.html로 302 응답
+			3. Location을 읽어 /index.html을 다시 요청
+			4. index.html읽어 200응답
+			
+		* status
+			- 2xx : 성공. 클라이언트가 요청한 동작을 수신하여 이해했고 승낙했으면 성공으로 처리
+			- 3xx : 리다이렉션. 클라이언트는 요청을 마치기 위해 추가 동작이 필요함
+			- 4xx : 요청 요류. 클라이언트에 오류가 있음.
+			- 5xx : 서버 오류. 서버가 유효한 요청을 명백하게 수행하지 못했음.
