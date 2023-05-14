@@ -24,7 +24,10 @@
 * https://opentutorials.org/course/1688 - php
 * https://www.codecademy.com/learn
 * http://www.w3schools.com - front  
-  
+
+* http://backlogtool.com/git-guide/kr/: 누구나 쉽게 이해할 수 있는 Git 입문
+* http://rogerdudler.github.io/git-guide/index.ko.html: Git 설치, 기본 사용법
+* http://www.slideshare.net/ibare/dvcs-git: Git의 commit과 push 개념 잡기
 ---
 ### Books
 * 열혈강의 자바 웹 개발 워크북
