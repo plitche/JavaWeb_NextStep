@@ -1,0 +1,25 @@
+	3.5.1 Git과 GitHub
+		* 버전관리 시스템(Version Control System : VCS)
+			- Git도 최근에 많이 사용하는 VCS의 한 종류
+			
+		* http://backlogtool.com/git-guide/kr/: 누구나 쉽게 이해할 수 있는 Git 입문
+		* http://rogerdudler.github.io/git-guide/index.ko.html: Git 설치, 기본 사용법
+		* http://www.slideshare.net/ibare/dvcs-git: Git의 commit과 push 개념 잡기
+		
+		* https://www.atlassian.com/git/tutorials
+		
+		실습
+		* https://try.github.io/level/1/challenges/1 : 15분만에 배우는 실습
+		* http://pcottle.github.io/learnGitBranching : 브랜치 rebase 등을 배우는 실습
+		
+		강의
+		* http://opentutorials.org/course/1492 : 생활코딩 강좌
+		
+		무료 이북
+		* http://dogfeet.github.io/articles/2012/progit.html
+		
+		Git GUI
+		* www.sourcetreeapp.com
+		
+		
+		
