@@ -1,0 +1,31 @@
+	3.5.3 디버깅을 위한 로깅(logging)
+		* 콘솔에 값을 출력하기 위한 용도로 사용하는 API가 System.out.println()이다.
+		  애플리케이션이 정상적으로 동작하는지 확인하기 위한 목적, 문제가 발생했을때 원인 파악을 위한 디버깅 목적이다.
+		  하지만 이는 애플리케이션 성능을 저하시키는 원인이 된다.
+		  파일에 메시지를 출력하는 작업은 상당한 비용이 발생한다.
+		  
+		* 이 단점을 보완하기 위해 등장한 라이브러리가 로깅(logging) 라이브러리이다.
+		  자바 진영에서 많이 사용하는 로깅 라이브러리는 Logback이다.
+		  과거에는 Log4J라는 라이브러리를 사용했찌만 성능이 Logback이 더 낫다.
+		  
+		* 자바 진영의 로깅 라이브러리는 메시지 출력 여부를 로그 레벨을 통해 관리한다.
+		  대표적인 로그 레벨은 TRACE, DEBUG, INFO, WARN, ERROR가 있다.
+		  로그 레벨이 높을 수록 출력되는 메시지는 적어지고, 로그 레벨이 낮을수록 더 많은 로깅 레벨이 출력된다.
+		  
+		* ex) log.debug(), log.info()
+		
+		* log.debug("New Client Connect! Connected IP : " + connection.getInetAddress() + ", Port : " + connection.getPort());
+		  그런데 이와 같이 구현할 경우 로그 레벨이 INFO, WARN인 경우 굳이 debug() 메소드에 인자를 더하기 위해 문자열을 더할 필요가 없다.
+		  -> log.debug("New Client Connect! Connected IP : {}, Port : {}", connection.getInetAddress(), connection.getPort());
+		  
+		* Logback은 로그 레벨과 메시지 형식에 대한 설정 파일은 logback.xml이다.
+		
+		* https://youtu.be/TcKEGh7KShl
+		  : 로깅 라이브러리가 필요한 이유, 로깅 라이브러리 설정 방법에 대해 다루고 있다.
+		  
+		  https://youtu.be/040Y3MBNnyw
+		  : 로깅 레벨 설명, 패키지별 로깅 라이브러리 설정, 동적인 메시지 구현시 주의할점
+		    반복적으로 추가되는 설정을 템플릿으로 해결, 이클립스 formatter 설정 방법 등
+		  
+		
+		  
