@@ -1,0 +1,13 @@
+	4.3 추가 학습 자료(http, 네트워크)
+		* HTTP
+			- https://www3.ntu.edu.sg/home/ehchua/programming/webprogramming/HTTP_Basics.html
+			
+			- 프로가 되기 위한 웹 기술 입문
+			- HTTP & Network
+			- HTTP 완벽 가이드
+			
+		* 네트워크
+			- 클라이언트와 서버 간에 데이터를 주고받는 과정
+			- 클라이언트가 보낸 데이터가 어떻게 서버까지 전달되며, 서버에서 전달된 데이터가 어떤 과정으로 클라이언트까지 전달되는지
+			- 성공과 실패를 결정하는 1%의 네트워크 원리
+		
