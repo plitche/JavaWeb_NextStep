@@ -1,0 +1,13 @@
+	5.1.2.2 HTTP 웹 서버 리팩토링 실습 - 응답 데이터를 처리하는 로직을 별도의 클래스로 분리한다(HttpResponse)
+		* Hint	
+			- RequestHandler 클래스를 보면 응답 데이터 처리를 위한 많은 중복을 제거한다.
+			- 응답 헤더 정보를 Map<String ,String>으로 관리한다.
+			- 응답을 보낼 때 HTML, CSS, 자바스크립트 파일을 직접 읽어 응답으로 보내는 메소드는 forward()
+			  다른 URL로 리다이렉트하는 메소드는 sendRedirect() 메소드를 나누어 구현한다.
+			  
+		* Process
+			- HttpresponseTest 코드는 HttpResponse를 통해 생성된 응답 데이터를 src/test/resources에 파일으 생성해 수동으로 확인하도록 구현하고 있다.
+			  수동으로 확인하는 번거로움이 있기는 하지만 HttpResponse를 다른 클래스에서 사용하기 전에 정상적으로 동작하는지 검증할 수 있다.
+			  만약 이 같은 수동 테스트가 만족스럽지 않다면 assertEquals()를 통해 자동화할 수 있는 방법을 찾아보자
+			  
+			  
