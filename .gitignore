@@ -1,2 +1,7 @@
 *.ppk
 ferdy_web2.pem
+*.txt
+*.md
+*.jar
+apache-tomcat-9.0.75-windows-x64/apache-tomcat-9.0.75/NOTICE
+apache-tomcat-9.0.75-windows-x64/
