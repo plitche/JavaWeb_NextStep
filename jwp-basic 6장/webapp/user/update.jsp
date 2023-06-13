@@ -13,7 +13,15 @@
     <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <link href="../css/styles.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
+<script>
+    $(document).ready(function() {
+        let msg = '${message}';
+        if (msg != '') alert(msg);
+    })
+
+</script>
 <body>
 <nav class="navbar navbar-fixed-top header">
     <div class="col-md-12">
