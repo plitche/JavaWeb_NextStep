@@ -30,8 +30,11 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = req.getSession();
         if (user.getPassword().equals(password)) {
             session.setAttribute("user", user);
+            resp.sendRedirect("/");
+        } else {
+            RequestDispatcher rd = req.getRequestDispatcher("/user/login_failed.html");
+            rd.forward(req, resp);
         }
-        RequestDispatcher rd = req.getRequestDispatcher("/");
-        rd.forward(req, resp);
+
     }
 }
