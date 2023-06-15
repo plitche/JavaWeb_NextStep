@@ -21,17 +21,22 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String userId = req.getParameter("userId");
-        String password = req.getParameter("password");
-        log.debug("userId : {}", userId);
+        try {
+            String userId = req.getParameter("userId");
+            String password = req.getParameter("password");
+            log.debug("userId : {}", userId);
 
-        User user = DataBase.findUserById(userId);
+            User user = DataBase.findUserById(userId);
 
-        HttpSession session = req.getSession();
-        if (user.getPassword().equals(password)) {
-            session.setAttribute("user", user);
-            resp.sendRedirect("/");
-        } else {
+            HttpSession session = req.getSession();
+            if (user.getPassword().equals(password)) {
+                session.setAttribute("user", user);
+                resp.sendRedirect("/");
+            } else {
+                RequestDispatcher rd = req.getRequestDispatcher("/user/login_failed.html");
+                rd.forward(req, resp);
+            }
+        } catch (NullPointerException e) {
             RequestDispatcher rd = req.getRequestDispatcher("/user/login_failed.html");
             rd.forward(req, resp);
         }

@@ -20,7 +20,7 @@ public class LogOutServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(LogOutServlet.class);
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         session.removeAttribute("user");
         resp.sendRedirect("/");
