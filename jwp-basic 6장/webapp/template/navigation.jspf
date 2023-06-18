@@ -57,8 +57,8 @@
                         <li><a href="/user/logout" role="button">로그아웃</a></li>
                     </c:when>
                     <c:otherwise>
-                        <li><a href="Desktop/Plitche/Project/JavaWebProgramming/jwp-basic 6장/webapp/user/login.html" role="button">로그인</a></li>
-                        <li><a href="Desktop/Plitche/Project/JavaWebProgramming/jwp-basic 6장/webapp/user/form.html" role="button">회원가입</a></li>
+                        <li><a href="/user/login" role="button">로그인</a></li>
+                        <li><a href="/user/form" role="button">회원가입</a></li>
                     </c:otherwise>
                 </c:choose>
 
