@@ -33,11 +33,11 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("user", user);
                 resp.sendRedirect("/");
             } else {
-                RequestDispatcher rd = req.getRequestDispatcher("/user/login_failed.html");
+                RequestDispatcher rd = req.getRequestDispatcher("/user/login_failed.jsp");
                 rd.forward(req, resp);
             }
         } catch (NullPointerException e) {
-            RequestDispatcher rd = req.getRequestDispatcher("/user/login_failed.html");
+            RequestDispatcher rd = req.getRequestDispatcher("/user/login_failed.jsp");
             rd.forward(req, resp);
         }
 
