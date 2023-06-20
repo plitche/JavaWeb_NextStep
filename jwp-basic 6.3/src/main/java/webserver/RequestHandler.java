@@ -34,7 +34,11 @@ public class RequestHandler extends Thread {
             HttpRequest request = new HttpRequest(in);
             HttpResponse response = new HttpResponse(out);
 
-            if (getSessionId(request.getHeader("Cookie")) == null) {
+//            if (getSessionId(request.getHeader("Cookie")) == null) {
+//                response.addHeader("Set-Cookie", "JSESSIONID=" + UUID.randomUUID());
+//            }
+
+            if (request.getCookie().getCookie("JESSIONID") == null) {
                 response.addHeader("Set-Cookie", "JSESSIONID=" + UUID.randomUUID());
             }
 

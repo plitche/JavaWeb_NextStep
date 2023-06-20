@@ -48,6 +48,10 @@ public class HttpRequest {
         return headers;
     }
 
+    public HttpCookie getCookie() {
+        return new HttpCookie(getHeader("cookie"));
+    }
+
     public HttpMethod getMethod() {
         return requestLine.getMethod();
     }
