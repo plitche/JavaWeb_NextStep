@@ -6,9 +6,13 @@ import http.HttpResponse;
 import http.HttpSession;
 import model.User;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collection;
 
 public class ListUserController extends AbstractController {
+
+    private static final long serialVersionUID = 1L;
 
     @Override
     public void doGet(HttpRequest request, HttpResponse response) {
