@@ -4,9 +4,8 @@ import http.HttpMethod;
 import http.HttpRequest;
 import http.HttpResponse;
 
-public class AbstractController implements Controller {
+public class AbstractController {
 
-    @Override
     public void service(HttpRequest request, HttpResponse response) {
         HttpMethod method = request.getMethod();
 
