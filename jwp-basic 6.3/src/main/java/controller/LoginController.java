@@ -1,26 +1,31 @@
 package controller;
 
+import core.mvc.Controller;
 import db.DataBase;
-import http.HttpRequest;
-import http.HttpResponse;
-import http.HttpSession;
 import model.User;
 
-public class LoginController extends AbstractController {
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+public class LoginController implements Controller {
 
     @Override
-    public void doPost(HttpRequest request, HttpResponse response) {
-        User user = DataBase.findUserById(request.getParameter("userId"));
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws Exception {
+        String userId = request.getParameter("userId");
+        String password = request.getParameter("password");
+        User user = DataBase.findUserById(userId);
         if (user == null) {
-            if (user.login(request.getParameter("password"))) {
-                HttpSession session = request.getSession();
-                session.setAttribute("user", user);
-                response.sendRedirect("/index.html");
-            } else {
-                response.sendRedirect("/user/login_failed.html");
-            }
+            request.setAttribute("loginFailed", true);
+            return "/user/login.jsp";
+        }
+        if (user.matchPassword(password)) {
+            HttpSession session = request.getSession();
+            session.setAttribute(UserSessionUtils.USER_SESSION_KEY, user);
+            return "redirect:/";
         } else {
-            response.sendRedirect("/user/login_failed.html");
+            request.setAttribute("loginFailed", true);
+            return "/user/login.jsp";
         }
     }
 }
