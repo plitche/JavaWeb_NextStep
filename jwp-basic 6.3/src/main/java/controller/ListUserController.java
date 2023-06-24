@@ -1,45 +1,28 @@
 package controller;
 
 import db.DataBase;
-import http.HttpRequest;
-import http.HttpResponse;
-import http.HttpSession;
-import model.User;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Collection;
+import java.io.IOException;
 
-public class ListUserController extends AbstractController {
+public class ListUserController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
     @Override
-    public void doGet(HttpRequest request, HttpResponse response) {
-        if (!isLogined(request.getSession())) {
-            response.sendRedirect("/user/login.html");
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (!UserSessionUtils.isLogined(request.getSession())) {
+            response.sendRedirect("/users/loginForm");
             return;
         }
 
-        Collection<User> users = DataBase.findAll();
-        StringBuilder sb = new StringBuilder();
-        sb.append("<table border='1'>");
-        for (User user : users) {
-            sb.append("<tr>");
-            sb.append("<td>" + user.getUserId() + "</td>");
-            sb.append("<td>" + user.getName() + "</td>");
-            sb.append("<td>" + user.getEmail() + "</td>");
-            sb.append("</tr>");
-        }
-        sb.append("</table>");
-        response.forwardBody(sb.toString());
-    }
+        request.setAttribute("users", DataBase.findAll());
 
-    private static boolean isLogined(HttpSession session) {
-        Object user = session.getAttribute("user");
-        if (user == null) {
-            return false;
-        }
-        return true;
+        RequestDispatcher rd = request.getRequestDispatcher("/user/list.jsp");
+        rd.forward(request, response);
     }
 }
