@@ -15,23 +15,43 @@ import next.model.User;
 // 데이터베이스에 대한 접근 로직 처리르 담당하는 객체를 별도로 분리하는것을 추천
 // 이 객체를 DAO(Data Access Object)라 한다.
 public class UserDao {
-    private void common(QueryType queryType) throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
+
+    private List<User> userList = new ArrayList<User>();
+    private User user = null;
+
+
+    private void common(QueryType queryType, Connection con, PreparedStatement pstmt) throws SQLException {
         try {
             String queryString = queryType.getQueryType();
 
-            String sql = "";
             if ("INSERT".equals(queryString)) {
-                sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-            } else if ("SELECT".equals(queryString)) {
-                sql = "UPDATE USERS " +
-                        "SET password = ?, name = ?, email = ? " +
-                        "WHERE userID = ?";
+                pstmt.executeUpdate();
+            } else if ("SELECT_ALL".equals(queryString)) {
+                ResultSet rs = null;
+
+                rs = pstmt.executeQuery();
+                while(rs.next()) {
+                    User user = new User(
+                            rs.getString("userId"),
+                            rs.getString("password"),
+                            rs.getString("name"),
+                            rs.getString("email")
+                    );
+                    userList.add(user);
+                }
             } else if ("UPDATE".equals(queryString)) {
-                sql = "SELECT userId, password, name, email FROM USERS";
+                pstmt.executeUpdate();
             } else if ("DELETE".equals(queryString)) {
-                sql = "SELECT userId, password, name, email FROM USERS";
+                ResultSet rs = null;
+
+                if (rs.next()) {
+                    user = new User(
+                            rs.getString("userId"),
+                            rs.getString("password"),
+                            rs.getString("name"),
+                            rs.getString("email")
+                    );
+                }
             }
 
         } finally {
@@ -46,119 +66,57 @@ public class UserDao {
     }
 
     public void insert(User user) throws SQLException {
+
         Connection con = null;
         PreparedStatement pstmt = null;
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, user.getUserId());
-            pstmt.setString(2, user.getPassword());
-            pstmt.setString(3, user.getName());
-            pstmt.setString(4, user.getEmail());
 
-            pstmt.executeUpdate();
-        } finally {
-            if (pstmt != null) {
-                pstmt.close();
-            }
+        con = ConnectionManager.getConnection();
+        String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
+        pstmt = con.prepareStatement(sql);
+        pstmt.setString(1, user.getUserId());
+        pstmt.setString(2, user.getPassword());
+        pstmt.setString(3, user.getName());
+        pstmt.setString(4, user.getEmail());
 
-            if (con != null) {
-                con.close();
-            }
-        }
+        common(QueryType.INSERT, con, pstmt);
     }
 
     public void update(User user) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = "UPDATE USERS " +
-                         "SET password = ?, name = ?, email = ? " +
-                         "WHERE userID = ?";
-            pstmt = con.prepareStatement(sql);
+        con = ConnectionManager.getConnection();
+        String sql = "UPDATE USERS " +
+                     "SET password = ?, name = ?, email = ? " +
+                     "WHERE userID = ?";
+        pstmt = con.prepareStatement(sql);
 
-            pstmt.setString(1, user.getPassword());
-            pstmt.setString(2, user.getName());
-            pstmt.setString(3, user.getEmail());
-            pstmt.setString(4, user.getUserId());
+        pstmt.setString(1, user.getPassword());
+        pstmt.setString(2, user.getName());
+        pstmt.setString(3, user.getEmail());
+        pstmt.setString(4, user.getUserId());
 
-            pstmt.executeUpdate();
-        } finally {
-            if (pstmt != null) {
-                pstmt.close();
-            }
-
-            if (con != null) {
-                con.close();
-            }
-        }
+        common(QueryType.UPDATE, con, pstmt);
     }
 
     public List<User> findAll() throws SQLException {
-        List<User> userList = new ArrayList<User>();
-
         Connection con = null;
         PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = "SELECT userId, password, name, email FROM USERS";
-            pstmt = con.prepareStatement(sql);
+        con = ConnectionManager.getConnection();
+        String sql = "SELECT userId, password, name, email FROM USERS";
+        pstmt = con.prepareStatement(sql);
 
-            rs = pstmt.executeQuery();
-            while(rs.next()) {
-                User user = new User(
-                        rs.getString("userId"),
-                        rs.getString("password"),
-                        rs.getString("name"),
-                        rs.getString("email")
-                );
-                userList.add(user);
-            }
-        } finally {
-            if (pstmt != null) {
-                pstmt.close();
-            }
-
-            if (con != null) {
-                con.close();
-            }
-        }
-
-        return userList;
+        common(QueryType.UPDATE, con, pstmt);
+        return this.userList;
     }
 
     public User findByUserId(String userId) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-            con = ConnectionManager.getConnection();
-            String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-            pstmt = con.prepareStatement(sql);
-            pstmt.setString(1, userId);
+        con = ConnectionManager.getConnection();
+        String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
+        pstmt = con.prepareStatement(sql);
+        pstmt.setString(1, userId);
 
-            rs = pstmt.executeQuery();
-
-            User user = null;
-            if (rs.next()) {
-                user = new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"),
-                        rs.getString("email"));
-            }
-
-            return user;
-        } finally {
-            if (rs != null) {
-                rs.close();
-            }
-            if (pstmt != null) {
-                pstmt.close();
-            }
-            if (con != null) {
-                con.close();
-            }
-        }
+        return this.user;
     }
 }

@@ -1,7 +1,7 @@
 package next.dao;
 
 public enum QueryType {
-    INSERT, SELECT, UPDATE, DELETE;
+    INSERT, SELECT_ALL, UPDATE, SELECT_ONE;
 
     public String getQueryType() {
         return this.toString();
