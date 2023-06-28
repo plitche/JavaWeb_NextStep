@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import core.jdbc.ConnectionManager;
 import next.model.User;
@@ -14,6 +15,36 @@ import next.model.User;
 // 데이터베이스에 대한 접근 로직 처리르 담당하는 객체를 별도로 분리하는것을 추천
 // 이 객체를 DAO(Data Access Object)라 한다.
 public class UserDao {
+    private void common(QueryType queryType) throws SQLException {
+        Connection con = null;
+        PreparedStatement pstmt = null;
+        try {
+            String queryString = queryType.getQueryType();
+
+            String sql = "";
+            if ("INSERT".equals(queryString)) {
+                sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
+            } else if ("SELECT".equals(queryString)) {
+                sql = "UPDATE USERS " +
+                        "SET password = ?, name = ?, email = ? " +
+                        "WHERE userID = ?";
+            } else if ("UPDATE".equals(queryString)) {
+                sql = "SELECT userId, password, name, email FROM USERS";
+            } else if ("DELETE".equals(queryString)) {
+                sql = "SELECT userId, password, name, email FROM USERS";
+            }
+
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+            if (con != null) {
+                con.close();
+            }
+        }
+    }
+
     public void insert(User user) throws SQLException {
         Connection con = null;
         PreparedStatement pstmt = null;
