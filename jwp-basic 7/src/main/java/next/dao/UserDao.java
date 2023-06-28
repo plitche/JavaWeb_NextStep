@@ -16,20 +16,41 @@ import next.model.User;
 // 이 객체를 DAO(Data Access Object)라 한다.
 public class UserDao {
 
+    private Connection con;
+    private PreparedStatement pstmt;
+    private ResultSet rs;
+
     private List<User> userList = new ArrayList<User>();
-    private User user = null;
+    private User user;
 
+    private String init(QueryType queryType) {
+        this.con = ConnectionManager.getConnection();
 
-    private void common(QueryType queryType, Connection con, PreparedStatement pstmt) throws SQLException {
+        String sql = "";
+        String queryString = queryType.getQueryType();
+        if ("INSERT".equals(queryString)) {
+            sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
+        } else if ("UPDATE".equals(queryString)) {
+            sql = "UPDATE USERS " +
+                    "SET password = ?, name = ?, email = ? " +
+                    "WHERE userID = ?";
+        } else if ("SELECT_ALL".equals(queryString)) {
+            sql = "SELECT userId, password, name, email FROM USERS";
+        } else if ("SELECT_ONE".equals(queryString)) {
+            sql = "SELECT userId, password, name, email FROM USERS WHERE userid = ?";
+        }
+
+        return sql;
+    }
+
+    private void common(QueryType queryType, String sql) throws SQLException {
         try {
             String queryString = queryType.getQueryType();
 
             if ("INSERT".equals(queryString)) {
-                pstmt.executeUpdate();
+                this.pstmt.executeUpdate();
             } else if ("SELECT_ALL".equals(queryString)) {
-                ResultSet rs = null;
-
-                rs = pstmt.executeQuery();
+                this.rs = this.pstmt.executeQuery();
                 while(rs.next()) {
                     User user = new User(
                             rs.getString("userId"),
@@ -37,15 +58,14 @@ public class UserDao {
                             rs.getString("name"),
                             rs.getString("email")
                     );
-                    userList.add(user);
+                    this.userList.add(user);
                 }
             } else if ("UPDATE".equals(queryString)) {
-                pstmt.executeUpdate();
-            } else if ("DELETE".equals(queryString)) {
-                ResultSet rs = null;
-
+                this.pstmt.executeUpdate();
+            } else if ("SELECT_ONE".equals(queryString)) {
+                this.rs = this.pstmt.executeQuery();
                 if (rs.next()) {
-                    user = new User(
+                    this.user = new User(
                             rs.getString("userId"),
                             rs.getString("password"),
                             rs.getString("name"),
@@ -55,68 +75,56 @@ public class UserDao {
             }
 
         } finally {
-            if (pstmt != null) {
-                pstmt.close();
+            if (this.pstmt != null) {
+                this.pstmt.close();
             }
 
-            if (con != null) {
-                con.close();
+            if (this.con != null) {
+                this.con.close();
             }
         }
     }
 
     public void insert(User user) throws SQLException {
+        String sql = init(QueryType.INSERT);
 
-        Connection con = null;
-        PreparedStatement pstmt = null;
+        this.pstmt = this.con.prepareStatement(sql);
+        this.pstmt.setString(1, user.getUserId());
+        this.pstmt.setString(2, user.getPassword());
+        this.pstmt.setString(3, user.getName());
+        this.pstmt.setString(4, user.getEmail());
 
-        con = ConnectionManager.getConnection();
-        String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-        pstmt = con.prepareStatement(sql);
-        pstmt.setString(1, user.getUserId());
-        pstmt.setString(2, user.getPassword());
-        pstmt.setString(3, user.getName());
-        pstmt.setString(4, user.getEmail());
-
-        common(QueryType.INSERT, con, pstmt);
+        common(QueryType.INSERT, sql);
     }
 
     public void update(User user) throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        con = ConnectionManager.getConnection();
-        String sql = "UPDATE USERS " +
-                     "SET password = ?, name = ?, email = ? " +
-                     "WHERE userID = ?";
-        pstmt = con.prepareStatement(sql);
+        String sql = init(QueryType.UPDATE);
 
-        pstmt.setString(1, user.getPassword());
-        pstmt.setString(2, user.getName());
-        pstmt.setString(3, user.getEmail());
-        pstmt.setString(4, user.getUserId());
+        this.pstmt = this.con.prepareStatement(sql);
+        this.pstmt.setString(1, user.getPassword());
+        this.pstmt.setString(2, user.getName());
+        this.pstmt.setString(3, user.getEmail());
+        this.pstmt.setString(4, user.getUserId());
 
-        common(QueryType.UPDATE, con, pstmt);
+        common(QueryType.UPDATE, sql);
     }
 
     public List<User> findAll() throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        con = ConnectionManager.getConnection();
-        String sql = "SELECT userId, password, name, email FROM USERS";
-        pstmt = con.prepareStatement(sql);
+        String sql = init(QueryType.SELECT_ALL);
 
-        common(QueryType.UPDATE, con, pstmt);
+        this.pstmt = this.con.prepareStatement(sql);
+
+        common(QueryType.SELECT_ALL, sql);
         return this.userList;
     }
 
     public User findByUserId(String userId) throws SQLException {
-        Connection con = null;
-        PreparedStatement pstmt = null;
-        con = ConnectionManager.getConnection();
-        String sql = "SELECT userId, password, name, email FROM USERS WHERE userid=?";
-        pstmt = con.prepareStatement(sql);
-        pstmt.setString(1, userId);
+        String sql = init(QueryType.SELECT_ONE);
 
+        this.pstmt = this.con.prepareStatement(sql);
+        this.pstmt.setString(1, userId);
+
+        common(QueryType.SELECT_ONE, sql);
         return this.user;
     }
 }
