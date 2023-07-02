@@ -10,6 +10,7 @@ import java.util.Map;
 
 import core.jdbc.ConnectionManager;
 import next.model.User;
+import next.support.JdbcTemplate;
 
 // UserDao 클래스를 통해 데이터베이스 접근 로직 구현
 // 데이터베이스에 대한 접근 로직 처리르 담당하는 객체를 별도로 분리하는것을 추천
@@ -86,15 +87,8 @@ public class UserDao {
     }
 
     public void insert(User user) throws SQLException {
-        String sql = init(QueryType.INSERT);
-
-        this.pstmt = this.con.prepareStatement(sql);
-        this.pstmt.setString(1, user.getUserId());
-        this.pstmt.setString(2, user.getPassword());
-        this.pstmt.setString(3, user.getName());
-        this.pstmt.setString(4, user.getEmail());
-
-        common(QueryType.INSERT, sql);
+        JdbcTemplate template = new JdbcTemplate();
+        template.addUser(user, this);
     }
 
     public void update(User user) throws SQLException {
@@ -127,4 +121,17 @@ public class UserDao {
         common(QueryType.SELECT_ONE, sql);
         return this.user;
     }
+
+
+    public String createQuery() {
+        return "INSERT INTO USERS VALUES (?, ?, ?, ?)";
+    }
+
+    public void setParameters(User user, PreparedStatement pstmt) throws SQLException {
+        this.pstmt.setString(1, user.getUserId());
+        this.pstmt.setString(2, user.getPassword());
+        this.pstmt.setString(3, user.getName());
+        this.pstmt.setString(4, user.getEmail());
+    }
+
 }
