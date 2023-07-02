@@ -10,8 +10,7 @@ import java.sql.SQLException;
 
 public abstract class JdbcTemplate {
 
-    public void insert() throws SQLException {
-        String sql = createQuery();
+    public void executeUpdate(String sql) throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
 
@@ -31,8 +30,6 @@ public abstract class JdbcTemplate {
             }
         }
     }
-
-    public abstract String createQuery();
 
     public abstract void setParameters(PreparedStatement pstmt) throws SQLException;
 

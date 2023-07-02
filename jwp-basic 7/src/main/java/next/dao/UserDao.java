@@ -89,11 +89,6 @@ public class UserDao {
     public void insert(User user) throws SQLException {
         JdbcTemplate template = new JdbcTemplate() {
             @Override
-            public String createQuery() {
-                return "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-            }
-
-            @Override
             public void setParameters(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, user.getUserId());
                 pstmt.setString(2, user.getPassword());
@@ -101,19 +96,37 @@ public class UserDao {
                 pstmt.setString(4, user.getEmail());
             }
         };
-        template.insert();
+
+        String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
+        template.executeUpdate(sql);
+    }
+
+    public void delete() throws SQLException {
+        JdbcTemplate template = new JdbcTemplate() {
+            @Override
+            public void setParameters(PreparedStatement pstmt) throws SQLException {
+                pstmt.setString(1, user.getUserId());
+            }
+        };
+
+        String sql = "delete from USERS where userId = ?";
+        template.executeUpdate(sql);
     }
 
     public void update(User user) throws SQLException {
-        String sql = init(QueryType.UPDATE);
+        JdbcTemplate template = new JdbcTemplate() {
+            @Override
+            public void setParameters(PreparedStatement pstmt) throws SQLException {
+                pstmt.setString(1, user.getPassword());
+                pstmt.setString(2, user.getName());
+                pstmt.setString(3, user.getEmail());
+                pstmt.setString(4, user.getUserId());
 
-        this.pstmt = this.con.prepareStatement(sql);
-        this.pstmt.setString(1, user.getPassword());
-        this.pstmt.setString(2, user.getName());
-        this.pstmt.setString(3, user.getEmail());
-        this.pstmt.setString(4, user.getUserId());
+            }
+        };
 
-        common(QueryType.UPDATE, sql);
+        String sql = "UPDATE USERS SET password = ?, name = ?, email = ? WHERE userID = ?";
+        template.executeUpdate(sql);
     }
 
     public List<User> findAll() throws SQLException {
