@@ -8,17 +8,17 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class JdbcTemplate {
+public abstract class JdbcTemplate {
 
-    public void addUser(User user, UserDao userDao) throws SQLException {
-        String sql = userDao.createQuery();
+    public void insert() throws SQLException {
+        String sql = createQuery();
         Connection conn = null;
         PreparedStatement pstmt = null;
 
         try {
             conn = ConnectionManager.getConnection();
             pstmt = conn.prepareStatement(sql);
-            userDao.setParameters(user, pstmt);
+            setParameters(pstmt);
 
             pstmt.executeUpdate();
         } finally {
@@ -32,7 +32,8 @@ public class JdbcTemplate {
         }
     }
 
+    public abstract String createQuery();
 
-
+    public abstract void setParameters(PreparedStatement pstmt) throws SQLException;
 
 }

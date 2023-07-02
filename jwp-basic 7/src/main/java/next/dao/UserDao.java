@@ -87,8 +87,21 @@ public class UserDao {
     }
 
     public void insert(User user) throws SQLException {
-        JdbcTemplate template = new JdbcTemplate();
-        template.addUser(user, this);
+        JdbcTemplate template = new JdbcTemplate() {
+            @Override
+            public String createQuery() {
+                return "INSERT INTO USERS VALUES (?, ?, ?, ?)";
+            }
+
+            @Override
+            public void setParameters(PreparedStatement pstmt) throws SQLException {
+                pstmt.setString(1, user.getUserId());
+                pstmt.setString(2, user.getPassword());
+                pstmt.setString(3, user.getName());
+                pstmt.setString(4, user.getEmail());
+            }
+        };
+        template.insert();
     }
 
     public void update(User user) throws SQLException {
@@ -120,18 +133,6 @@ public class UserDao {
 
         common(QueryType.SELECT_ONE, sql);
         return this.user;
-    }
-
-
-    public String createQuery() {
-        return "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-    }
-
-    public void setParameters(User user, PreparedStatement pstmt) throws SQLException {
-        this.pstmt.setString(1, user.getUserId());
-        this.pstmt.setString(2, user.getPassword());
-        this.pstmt.setString(3, user.getName());
-        this.pstmt.setString(4, user.getEmail());
     }
 
 }
