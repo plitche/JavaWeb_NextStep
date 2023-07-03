@@ -8,10 +8,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class SelectjdbcTemplate {
-    public User findByUserId(String userId) throws SQLException {
-        String sql = createQuery();
+public abstract class SelectJdbcTemplate {
 
+    public Object executeQuery(String sql) throws SQLException {
         Connection conn = null;
         PreparedStatement pstmt = null;
         ResultSet rs = null;
@@ -19,7 +18,7 @@ public class SelectjdbcTemplate {
         try {
             conn = ConnectionManager.getConnection();
             pstmt = conn.prepareStatement(sql);
-            setParameters2(userId, pstmt);
+            setParameters(pstmt);
 
             rs = pstmt.executeQuery();
 
@@ -34,4 +33,10 @@ public class SelectjdbcTemplate {
             }
         }
     }
+
+    // template method pattern
+    public abstract void setParameters(PreparedStatement pstmt) throws SQLException;
+
+    public abstract Object mapRow(ResultSet rs) throws SQLException;
+
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
@@ -24,6 +25,7 @@ public class UserDaoTest {
     }
 
     @Test
+    @Order(1)
     public void crud() throws Exception {
         User expected = new User("userId", "password", "name", "javajigi@email.com");
         userDao.insert(expected);
@@ -37,7 +39,11 @@ public class UserDaoTest {
     }
 
     @Test
+    @Order(2)
     public void findAll() throws Exception {
+        User expected = new User("userId", "password", "name", "javajigi@email.com");
+        userDao.insert(expected);
+
         List<User> users = userDao.findAll();
         assertEquals(1, users.size());
     }
