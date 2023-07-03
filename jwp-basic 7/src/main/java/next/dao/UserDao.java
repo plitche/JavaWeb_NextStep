@@ -139,13 +139,53 @@ public class UserDao {
     }
 
     public User findByUserId(String userId) throws SQLException {
-        String sql = init(QueryType.SELECT_ONE);
+        String sql = createQuery();
 
-        this.pstmt = this.con.prepareStatement(sql);
-        this.pstmt.setString(1, userId);
+        Connection conn = null;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
 
-        common(QueryType.SELECT_ONE, sql);
-        return this.user;
+        try {
+            conn = ConnectionManager.getConnection();
+            pstmt = conn.prepareStatement(sql);
+            setParameters2(userId, pstmt);
+
+            rs = pstmt.executeQuery();
+
+            return mapRow(rs);
+        } finally {
+            if (pstmt != null) {
+                pstmt.close();
+            }
+
+            if (conn != null) {
+                conn.close();
+            }
+        }
     }
+
+    private String createQuery() {
+        String sql = "select * from USERS where userId = ?";
+        return sql;
+    }
+
+    private void setParameters2(String userId, PreparedStatement pstmt) throws SQLException {
+        pstmt.setString(1, userId);
+    }
+
+    private User mapRow(ResultSet rs) throws SQLException {
+        if (!rs.next()) {
+            return null;
+        }
+
+        return new User(
+                rs.getString("userId"),
+                rs.getString("password"),
+                rs.getString("name"),
+                rs.getString("email")
+        );
+    }
+
+
 
 }
