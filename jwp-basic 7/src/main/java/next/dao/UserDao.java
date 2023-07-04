@@ -8,7 +8,6 @@ import java.util.List;
 
 import next.model.User;
 import next.support.JdbcTemplate;
-import next.support.SelectJdbcTemplate;
 
 // UserDao 클래스를 통해 데이터베이스 접근 로직 구현
 // 데이터베이스에 대한 접근 로직 처리르 담당하는 객체를 별도로 분리하는것을 추천
@@ -24,6 +23,11 @@ public class UserDao {
                 pstmt.setString(3, user.getName());
                 pstmt.setString(4, user.getEmail());
             }
+
+            @Override
+            public Object mapRow(ResultSet rs) throws SQLException {
+                return null;
+            }
         };
 
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
@@ -35,6 +39,11 @@ public class UserDao {
             @Override
             public void setParameters(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, user.getUserId());
+            }
+
+            @Override
+            public Object mapRow(ResultSet rs) throws SQLException {
+                return null;
             }
         };
 
@@ -52,6 +61,11 @@ public class UserDao {
                 pstmt.setString(4, user.getUserId());
 
             }
+
+            @Override
+            public Object mapRow(ResultSet rs) throws SQLException {
+                return null;
+            }
         };
 
         String sql = "UPDATE USERS SET password = ?, name = ?, email = ? WHERE userID = ?";
@@ -59,7 +73,7 @@ public class UserDao {
     }
 
     public List<User> findAll() throws SQLException {
-        SelectJdbcTemplate template = new SelectJdbcTemplate() {
+        JdbcTemplate template = new JdbcTemplate() {
             @Override
             public void setParameters(PreparedStatement pstmt) throws SQLException {
 
@@ -91,7 +105,7 @@ public class UserDao {
     }
 
     public User findByUserId(String userId) throws SQLException {
-        SelectJdbcTemplate template = new SelectJdbcTemplate() {
+        JdbcTemplate template = new JdbcTemplate() {
             @Override
             public void setParameters(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, userId);
