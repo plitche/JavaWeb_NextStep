@@ -8,6 +8,8 @@ import java.util.List;
 
 import next.model.User;
 import next.support.JdbcTemplate;
+import next.support.PreparedStatementSetter;
+import next.support.RowMapper;
 
 // UserDao 클래스를 통해 데이터베이스 접근 로직 구현
 // 데이터베이스에 대한 접근 로직 처리르 담당하는 객체를 별도로 분리하는것을 추천
@@ -15,7 +17,7 @@ import next.support.JdbcTemplate;
 public class UserDao {
 
     public void insert(User user) throws SQLException {
-        JdbcTemplate template = new JdbcTemplate() {
+        PreparedStatementSetter pss = new PreparedStatementSetter() {
             @Override
             public void setParameters(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, user.getUserId());
@@ -23,68 +25,53 @@ public class UserDao {
                 pstmt.setString(3, user.getName());
                 pstmt.setString(4, user.getEmail());
             }
-
-            @Override
-            public Object mapRow(ResultSet rs) throws SQLException {
-                return null;
-            }
         };
 
+        JdbcTemplate template = new JdbcTemplate() {};
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-        template.executeUpdate(sql);
+        template.executeUpdate(sql, pss);
     }
 
     public void delete(User user) throws SQLException {
-        JdbcTemplate template = new JdbcTemplate() {
+        PreparedStatementSetter pss = new PreparedStatementSetter() {
             @Override
             public void setParameters(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, user.getUserId());
             }
-
-            @Override
-            public Object mapRow(ResultSet rs) throws SQLException {
-                return null;
-            }
         };
 
+        JdbcTemplate template = new JdbcTemplate() {};
         String sql = "delete from USERS where userId = ?";
-        template.executeUpdate(sql);
+        template.executeUpdate(sql, pss);
     }
 
     public void update(User user) throws SQLException {
-        JdbcTemplate template = new JdbcTemplate() {
+        PreparedStatementSetter pss = new PreparedStatementSetter() {
             @Override
             public void setParameters(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, user.getPassword());
                 pstmt.setString(2, user.getName());
                 pstmt.setString(3, user.getEmail());
                 pstmt.setString(4, user.getUserId());
-
-            }
-
-            @Override
-            public Object mapRow(ResultSet rs) throws SQLException {
-                return null;
             }
         };
 
+        JdbcTemplate template = new JdbcTemplate() {};
         String sql = "UPDATE USERS SET password = ?, name = ?, email = ? WHERE userID = ?";
-        template.executeUpdate(sql);
+        template.executeUpdate(sql, pss);
     }
 
     public List<User> findAll() throws SQLException {
-        JdbcTemplate template = new JdbcTemplate() {
+        PreparedStatementSetter pss = new PreparedStatementSetter() {
             @Override
             public void setParameters(PreparedStatement pstmt) throws SQLException {
 
             }
+        };
 
+        RowMapper rm = new RowMapper() {
             @Override
             public Object mapRow(ResultSet rs) throws SQLException {
-                if (!rs.next()) {
-                    return null;
-                }
-
                 List<User> userList = new ArrayList<>();
 
                 while(rs.next()) {
@@ -100,23 +87,23 @@ public class UserDao {
                 return userList;
             }
         };
+
+        JdbcTemplate template = new JdbcTemplate() {};
         String sql = "SELECT userId, password, name, email FROM USERS";
-        return (List<User>) template.executeQuery(sql);
+        return (List<User>) template.executeQuery(sql, pss, rm);
     }
 
     public User findByUserId(String userId) throws SQLException {
-        JdbcTemplate template = new JdbcTemplate() {
+        PreparedStatementSetter pss = new PreparedStatementSetter() {
             @Override
             public void setParameters(PreparedStatement pstmt) throws SQLException {
                 pstmt.setString(1, userId);
             }
+        };
 
+        RowMapper rm = new RowMapper() {
             @Override
             public Object mapRow(ResultSet rs) throws SQLException {
-                if (!rs.next()) {
-                    return null;
-                }
-
                 return new User(
                         rs.getString("userId"),
                         rs.getString("password"),
@@ -126,8 +113,9 @@ public class UserDao {
             }
         };
 
+        JdbcTemplate template = new JdbcTemplate() {};
         String sql = "select * from USERS where userId = ?";
-        return (User) template.executeQuery(sql);
+        return (User) template.executeQuery(sql, pss, rm);
     }
 
 }
