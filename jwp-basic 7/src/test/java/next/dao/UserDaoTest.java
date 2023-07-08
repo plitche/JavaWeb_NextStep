@@ -47,4 +47,5 @@ public class UserDaoTest {
         List<User> users = userDao.findAll();
         assertEquals(1, users.size());
     }
+
 }

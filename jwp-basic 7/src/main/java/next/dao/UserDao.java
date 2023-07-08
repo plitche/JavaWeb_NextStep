@@ -35,28 +35,21 @@ public class UserDao {
     }
 
     public List<User> findAll() throws SQLException {
-        RowMapper<List<User>> rm = new RowMapper<List<User>>() {
+        RowMapper<User> rm = new RowMapper<User>() {
             @Override
-            public List<User> mapRow(ResultSet rs) throws SQLException {
-                List<User> userList = new ArrayList<>();
-
-                while(rs.next()) {
-                    User user = new User(
-                            rs.getString("userId"),
-                            rs.getString("password"),
-                            rs.getString("name"),
-                            rs.getString("email")
-                    );
-                    userList.add(user);
-                }
-
-                return userList;
+            public User mapRow(ResultSet rs) throws SQLException {
+                return new User(
+                        rs.getString("userId"),
+                        rs.getString("password"),
+                        rs.getString("name"),
+                        rs.getString("email")
+                );
             }
         };
 
         JdbcTemplate template = new JdbcTemplate() {};
         String sql = "SELECT userId, password, name, email FROM USERS";
-        return template.executeQuery(sql, rm);
+        return template.list(sql, rm);
     }
 
     public User findByUserId(String userId) throws SQLException {
