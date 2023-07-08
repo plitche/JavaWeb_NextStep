@@ -17,61 +17,27 @@ import next.support.RowMapper;
 public class UserDao {
 
     public void insert(User user) throws SQLException {
-        PreparedStatementSetter pss = new PreparedStatementSetter() {
-            @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-                pstmt.setString(1, user.getUserId());
-                pstmt.setString(2, user.getPassword());
-                pstmt.setString(3, user.getName());
-                pstmt.setString(4, user.getEmail());
-            }
-        };
-
         JdbcTemplate template = new JdbcTemplate() {};
         String sql = "INSERT INTO USERS VALUES (?, ?, ?, ?)";
-        template.executeUpdate(sql, pss);
+        template.executeUpdate(sql, user.getUserId(), user.getPassword(), user.getName(), user.getEmail());
     }
 
     public void delete(User user) throws SQLException {
-        PreparedStatementSetter pss = new PreparedStatementSetter() {
-            @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-                pstmt.setString(1, user.getUserId());
-            }
-        };
-
         JdbcTemplate template = new JdbcTemplate() {};
         String sql = "delete from USERS where userId = ?";
-        template.executeUpdate(sql, pss);
+        template.executeUpdate(sql, user.getUserId());
     }
 
     public void update(User user) throws SQLException {
-        PreparedStatementSetter pss = new PreparedStatementSetter() {
-            @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-                pstmt.setString(1, user.getPassword());
-                pstmt.setString(2, user.getName());
-                pstmt.setString(3, user.getEmail());
-                pstmt.setString(4, user.getUserId());
-            }
-        };
-
         JdbcTemplate template = new JdbcTemplate() {};
         String sql = "UPDATE USERS SET password = ?, name = ?, email = ? WHERE userID = ?";
-        template.executeUpdate(sql, pss);
+        template.executeUpdate(sql, user.getPassword(), user.getName(), user.getEmail(), user.getUserId());
     }
 
     public List<User> findAll() throws SQLException {
-        PreparedStatementSetter pss = new PreparedStatementSetter() {
+        RowMapper<List<User>> rm = new RowMapper<List<User>>() {
             @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-
-            }
-        };
-
-        RowMapper rm = new RowMapper() {
-            @Override
-            public Object mapRow(ResultSet rs) throws SQLException {
+            public List<User> mapRow(ResultSet rs) throws SQLException {
                 List<User> userList = new ArrayList<>();
 
                 while(rs.next()) {
@@ -90,20 +56,13 @@ public class UserDao {
 
         JdbcTemplate template = new JdbcTemplate() {};
         String sql = "SELECT userId, password, name, email FROM USERS";
-        return (List<User>) template.executeQuery(sql, pss, rm);
+        return template.executeQuery(sql, rm);
     }
 
     public User findByUserId(String userId) throws SQLException {
-        PreparedStatementSetter pss = new PreparedStatementSetter() {
+        RowMapper<User> rm = new RowMapper<User>() {
             @Override
-            public void setParameters(PreparedStatement pstmt) throws SQLException {
-                pstmt.setString(1, userId);
-            }
-        };
-
-        RowMapper rm = new RowMapper() {
-            @Override
-            public Object mapRow(ResultSet rs) throws SQLException {
+            public User mapRow(ResultSet rs) throws SQLException {
                 return new User(
                         rs.getString("userId"),
                         rs.getString("password"),
@@ -115,7 +74,7 @@ public class UserDao {
 
         JdbcTemplate template = new JdbcTemplate() {};
         String sql = "select * from USERS where userId = ?";
-        return (User) template.executeQuery(sql, pss, rm);
+        return template.executeQuery(sql, rm, userId);
     }
 
 }
