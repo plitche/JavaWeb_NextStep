@@ -113,18 +113,32 @@
 1. 로컬 개발 환경에 톰캑 서버를 시작하면 서블릿 컨테이너의 초기화 과정이 진행된다.  
    현재 소스코드에서 초기화 되는 과정에 대해 설명하라(WebServer Launcher의 시작 과정이 아닌 프로젝트 초기화 과정)  
    - hint: DB 초기화를 담당하는 COntextLoaderListener 클래스와 URL 매핑 초기화를 담당하는 DispatcherServlet부터 시작한다.  
+   > 서블릿 컨테이너는 웹 애플리케이션의 상태를 관리하는 ServletContext를 생성한다.  
+   > ServeletCnotext가 초기화되면 컨텍스트의 초기화 이벤트가 발생한다.  
+   > 등록된 ServletContentListener의 콜백 메소드(contextInitialized)가 호출된다.  
+   > jwp.sql 파일에서 SQL 문을 실행해 데이터베이스 테이블을 초기화한다.  
+   > 서블릿 컨테이는 클라이언트의 최초 요청시 DispatcherServlet인스턴스를 생성한다(생성자 호출). 이에 대한 설정은 @WebServlet의 loadOnStatUp 속성으로 설정할 수 있다.  
+   > DispatcherServlet 인스턴스의 init() 메소드를 호출해 초기화 작업을 진행한다.  
+   > init() 메소드 안에서 RequestMapping 객체를 생성한다.  
+   > RequestMapping 인스턴스의 initMapping() 메소드를 호출한다. initMapping() 메소드에서는 요청 URL과 Controller 인스턴스를 매핑시킨다.  
   
 2. 로컬 개발 환경에서 톰캣 서브를 시작한 후 http://localhost:8080으로 접근하면 질문 목록을 확인할 수 있다.  
-   접근해서 질문 목록이 보이기까지 소스코드의 호출 순서 및 흐름을 설명하라.  
+   접근해서 질문 목록이 보이기까지 소스코드의 호출 순서 및 흐름을 설명하라.
    > @RequestMapping("/")를 가지는 Controller의 메소드가 호출되면서 질문 목록을 select하는 로직이 끝난 후 viewresolver를 통한 file name return을 클라이언트에 응답한다.
-   
-3. 로그인하지 않은 사용자도 질문하기가 가능하다. 로그인한 사용자만 질문이 가등하도록 수정한다.  
+     
+   > localhost:8080으로 접근하면 먼저 ResourceFilter와 CharacterEncodingFilter의 doFilter()메소드가 실행된다. 
+   > 요청 처리는 "/"으로 매핑되어있는 DispatcherServlet이므로 이 서블릿의 service() 메소드가 실행된다.  
+   > service()메소드는 요청받은 URL을 분석해 해당 Controller 객체를 RequestMapping에서 가져온다.  
+   > service()메소드는 HomeController의 execute() 메소드에게 작업을 위임한다.  
+   > service()메소드는 반환받은 ModelAndView의 모델 데이터를 뷰의 render() 메소드에 전달한다. 이 요청에서 View는 JspView이다.  
+      
+4. 로그인하지 않은 사용자도 질문하기가 가능하다. 로그인한 사용자만 질문이 가등하도록 수정한다.  
    > 로그인시 session에 저장되어 있는 user 정보를 조회하여 해당 데이터를 통해 제어 가능
    
-4. 질문 목록에서 제목을 클릭하면 상세보기 화면으로 이동한다. 답변목록을 정적인 HTML이 아니라 데이터베이스에 저장되어 있는 답변을 출력하도록 구현한다.  
+5. 질문 목록에서 제목을 클릭하면 상세보기 화면으로 이동한다. 답변목록을 정적인 HTML이 아니라 데이터베이스에 저장되어 있는 답변을 출력하도록 구현한다.  
    > JSTL 문법을 이용하여 Controller에서 response한 데이터에 접근하여 출력한다.
    
-5. 자바 기반으로 웹 프로그래밍을 할 경우 한글이 깨진다. 한글이 깨지는 문제를 해결하기 위해 ServletFilter를 활용해 문제를 해결할 수 있다.  
+6. 자바 기반으로 웹 프로그래밍을 할 경우 한글이 깨진다. 한글이 깨지는 문제를 해결하기 위해 ServletFilter를 활용해 문제를 해결할 수 있다.  
   ```java
     public class CharacterEncodingFilter implements Filter {
       FilterConfig config;
@@ -144,11 +158,25 @@
       public void destroy() { }
   }
   ```
-6. next.web.qna 패키지의 ShowController는 멀티스레드 상황에서 문제가 발생할 수 있다. 그 이유를 기술하고 수정하라.
-7. 이 Q&A 서비스는 모바일에서도 서비스 할 계획이라 API를 추가해야 한다. API는 JSON형식으로 제공할 계획이다.
+6. next.web.qna 패키지의 ShowController는 멀티스레드 상황에서 문제가 발생할 수 있다. 그 이유를 기술하고 수정하라.  
+   > 자바 프로그래밍에서 큰래스의 인스턴스를 생성할 때 비용이 발생한다.  
+   > 인스턴스를 생성하고 더이상 사용하지 않을 경우 가비지 콜렉션 과정을 통해 메모리에서 해제하는 과정 또한 비용이 발생한다. 따라서 인스턴스를 매번 생성할 필요가 없는 경우 매번 인스턴스를 생성하지 않는 것이 성능 측면에서 더 유리하다.  
+   > 매 클라이언트마다 서로 다른 상태 값을 유지할 필요가 있는 경우 매 요청마다 인스턴스를 새로 생성해야 한다.  
+   > 서블릿은 서블릿 컨테이너가 시작할 때 인스턴스를 하나 생성한 후 재사용한다. 지금까지 구 현한 MVC 프레임워크의 RequestMapping 인스턴스 또한 하나, 각 컨트롤러의 슨스턴스 또한 하나이다.  
+   > 하지만 서블릿 컨테이너는 멀티스레드 환경에서 동작한다. 즉, 멀티스레드 환경에서 여러명의 사용자가 인스턴스 하나를 재사용하고 있다.  
+     
+   > JVM은 코드를 실행하기 위해 메모리를 스택과 힙 영역으로 나누어 관리한다.  
+   > 스택: 각 메소드가 실행될 떄 메소드의 인자, 로컬 변수 등을 관리하는 메모리 영역으로 각 스레드마다 서로 다른 스택 영역을 과진다.  
+   > 힙: 클래스의 인스턴스 상태 데이터를 관리하는 영역이다. 스레드가 서로 공유할 수 있는 영역이다.  
+7. 이 Q&A 서비스는 모바일에서도 서비스 할 계획이라 API를 추가해야 한다. API는 JSON형식으로 제공할 계획이다.  
 8. 싱글톤 패턴이란
-9. 의존관계 주입(Dependency Injection이란
-10. 자바 리플렉션이란
+   > 매 요청마다 모든 클래스의 인스턴스를 생성하지 않아도 된다. 대표적인 클래서가 Cotnroller, DAO, JdbcTemplate와 같이 상태 값은 가지지 않으면서 메소드만 가지는 클래스이다.  
+   > 매번 인스턴스를 생성하지 않고 인스턴스 하나만 생성해 재사용하도록 강제할 수 있는 디자인 패턴이 싱글톤(singleton) 패턴이다.  
+   > 싱글톤 패턴을 구현하려면 먼저 클래스의 기본 생성자를 private 접근 제어자로 구현해 클래스 외부에서 인스턴스를 생성할 수 없도록 한다.  
+   > 인스턴스에 대한 생성은 getInstance()와 같은 static 메소드를 통해 가능하도록 허용한다.
+10. 의존관계 주입(Dependency Injection이란
+   
+11. 자바 리플렉션이란  
 
 
 
