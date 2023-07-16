@@ -108,3 +108,64 @@
   - ln -s
   - source
   - vi
+
+### 개념 정리
+1. 로컬 개발 환경에 톰캑 서버를 시작하면 서블릿 컨테이너의 초기화 과정이 진행된다.  
+   현재 소스코드에서 초기화 되는 과정에 대해 설명하라(WebServer Launcher의 시작 과정이 아닌 프로젝트 초기화 과정)  
+   - hint: DB 초기화를 담당하는 COntextLoaderListener 클래스와 URL 매핑 초기화를 담당하는 DispatcherServlet부터 시작한다.  
+  
+2. 로컬 개발 환경에서 톰캣 서브를 시작한 후 http://localhost:8080으로 접근하면 질문 목록을 확인할 수 있다.  
+   접근해서 질문 목록이 보이기까지 소스코드의 호출 순서 및 흐름을 설명하라.  
+   > @RequestMapping("/")를 가지는 Controller의 메소드가 호출되면서 질문 목록을 select하는 로직이 끝난 후 viewresolver를 통한 file name return을 클라이언트에 응답한다.
+   
+3. 로그인하지 않은 사용자도 질문하기가 가능하다. 로그인한 사용자만 질문이 가등하도록 수정한다.  
+   > 로그인시 session에 저장되어 있는 user 정보를 조회하여 해당 데이터를 통해 제어 가능
+   
+4. 질문 목록에서 제목을 클릭하면 상세보기 화면으로 이동한다. 답변목록을 정적인 HTML이 아니라 데이터베이스에 저장되어 있는 답변을 출력하도록 구현한다.  
+   > JSTL 문법을 이용하여 Controller에서 response한 데이터에 접근하여 출력한다.
+   
+5. 자바 기반으로 웹 프로그래밍을 할 경우 한글이 깨진다. 한글이 깨지는 문제를 해결하기 위해 ServletFilter를 활용해 문제를 해결할 수 있다.  
+  ```java
+    public class CharacterEncodingFilter implements Filter {
+      FilterConfig config;
+   
+      @Override
+      public void init(FilterConfig filterConfig) throws ServletException {
+          this.config = filterConfig;
+      }
+   
+      @Override
+      public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
+          servletRequest.setCharacterEncoding(config.getInitParameter("encoding"));
+          filterChain.doFilter(servletRequest, servletResponse);
+      }
+   
+      @Override
+      public void destroy() { }
+  }
+  ```
+6. next.web.qna 패키지의 ShowController는 멀티스레드 상황에서 문제가 발생할 수 있다. 그 이유를 기술하고 수정하라.
+7. 이 Q&A 서비스는 모바일에서도 서비스 할 계획이라 API를 추가해야 한다. API는 JSON형식으로 제공할 계획이다.
+8. 싱글톤 패턴이란
+9. 의존관계 주입(Dependency Injection이란
+10. 자바 리플렉션이란
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
