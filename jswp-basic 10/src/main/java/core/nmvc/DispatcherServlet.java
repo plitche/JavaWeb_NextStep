@@ -9,15 +9,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import core.mvc.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
-
-import core.mvc.ControllerHandlerAdapter;
-import core.mvc.LegacyHandlerMapping;
-import core.mvc.ModelAndView;
-import core.mvc.View;
 
 @WebServlet(name = "dispatcher", urlPatterns = "/", loadOnStartup = 1)
 public class DispatcherServlet extends HttpServlet {
@@ -27,11 +23,13 @@ public class DispatcherServlet extends HttpServlet {
     private List<HandlerMapping> mappings = Lists.newArrayList();
     private List<HandlerAdapter> handlerAdapters = Lists.newArrayList();
 
+    LegacyHandlerMapping lhm;
+    AnnotationHandlerMapping ahm;
     @Override
     public void init() throws ServletException {
-        LegacyHandlerMapping lhm = new LegacyHandlerMapping();
+        lhm = new LegacyHandlerMapping();
         lhm.initMapping();
-        AnnotationHandlerMapping ahm = new AnnotationHandlerMapping("next.controller");
+        ahm = new AnnotationHandlerMapping("next.controller");
         ahm.initialize();
 
         mappings.add(lhm);
@@ -43,22 +41,18 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String requestUri = req.getRequestURI();
-        logger.debug("Method : {}, Request URI : {}", req.getMethod(), requestUri);
-
-        Object handler = getHandler(req);
-        if (handler == null) {
-            throw new IllegalArgumentException("존재하지 않는 URL입니다.");
-        }
-
         try {
-            ModelAndView mav = execute(handler, req, resp);
-            if (mav != null) {
-                View view = mav.getView();
-                view.render(mav.getModel(), req, resp);
+            Controller controller = lhm.findController(req.getRequestURI());
+            if (controller != null) {
+                render(req, resp, controller.execute(req, resp));
+            } else {
+                HandlerExecution he = ahm.getHandler(req);
+                if (he == null) {
+                    throw new ServletException("유효하지 않은 요청입니다.");
+                }
+                render(req, resp, he.handle(req, resp));
             }
         } catch (Throwable e) {
-            logger.error("Exception : {}", e);
             throw new ServletException(e.getMessage());
         }
     }
@@ -80,5 +74,10 @@ public class DispatcherServlet extends HttpServlet {
             }
         }
         return null;
+    }
+
+    private void render(HttpServletRequest request, HttpServletResponse response, ModelAndView mv) throws Exception {
+        View view  = mv.getView();
+        view.render(mv.getModel(), request, response);
     }
 }
